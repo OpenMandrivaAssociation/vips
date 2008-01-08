@@ -1,6 +1,6 @@
 %define name vips
 %define version 7.10.21
-%define release %mkrel 3
+%define release %mkrel 4
 
 %define lib_major 10
 %define lib_name  %mklibname %{name} %{lib_major}
@@ -22,7 +22,7 @@ BuildRequires: jpeg-devel
 BuildRequires: tiff-devel
 BuildRequires: fftw3-devel 
 BuildRequires: zlib-devel 
-BuildRequires: ImageMagick-devel
+BuildRequires: imagemagick-devel
 BuildRequires: perl(XML::Parser)
 
 %description
