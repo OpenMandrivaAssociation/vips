@@ -1,6 +1,6 @@
 %define name vips
 %define version 7.10.21
-%define release %mkrel 4
+%define release %mkrel 5
 
 %define lib_major 10
 %define lib_name  %mklibname %{name} %{lib_major}
