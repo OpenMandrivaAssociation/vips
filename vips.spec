@@ -6,7 +6,7 @@
 %define lib_name  %mklibname %{name} %{lib_major}
 %define lib_name_orig lib%{name}
 
-Summary: VIPS is a free image processing system
+Summary: Free image processing system
 Name: %{name}
 Version: %{version}
 Release: %{release}
