@@ -6,7 +6,7 @@
 %define lib_name  %mklibname %{name} %{lib_major}
 %define lib_name_orig lib%{name}
 
-Summary: Free image processing system
+Summary: Image processing system
 Name: %{name}
 Version: %{version}
 Release: %{release}
