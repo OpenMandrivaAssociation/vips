@@ -1,29 +1,26 @@
-%define name vips
-%define version 7.10.21
-%define release %mkrel 6
+%define major		15
+%define libname		%mklibname %{name} %{major}
+%define develname	%mklibname %{name} -d
 
-%define lib_major 10
-%define lib_name  %mklibname %{name} %{lib_major}
-%define lib_name_orig lib%{name}
-
-Summary: Image processing system
-Name: %{name}
-Version: %{version}
-Release: %{release}
-License: LGPL
-Group: Video
-URL: http://www.vips.ecs.soton.ac.uk/index.php
-Source0: %{name}-%{version}.tar.bz2
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: glib2-devel 
-BuildRequires: pango-devel
-BuildRequires: png-devel
-BuildRequires: jpeg-devel 
-BuildRequires: tiff-devel
-BuildRequires: fftw3-devel 
-BuildRequires: zlib-devel 
-BuildRequires: imagemagick-devel
-BuildRequires: perl(XML::Parser)
+Summary:	Image processing system
+Name:		vips
+Version:	7.14.4
+Release:	%{mkrel 1}
+License:	LGPLv2+
+Group:		Video
+URL:		http://www.vips.ecs.soton.ac.uk/index.php
+Source0:	%{name}-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:	glib2-devel 
+BuildRequires:	pango-devel
+BuildRequires:	png-devel
+BuildRequires:	jpeg-devel 
+BuildRequires:	tiff-devel
+BuildRequires:	fftw3-devel 
+BuildRequires:	zlib-devel 
+BuildRequires:	liboil-devel
+BuildRequires:	graphicsmagick-devel
+BuildRequires:	perl(XML::Parser)
 
 %description
 VIPS is a free image processing system. It aims to be about half-way between
@@ -32,49 +29,64 @@ for the many other imaging tasks that programs like Photoshop get used for.
 It is good with large images (images larger than the amount of RAM in your 
 machine), and for working with colour.
 
-%files -f %{name}7.lang
-%defattr(-,root,root,-)
-%doc README COPYING AUTHORS NEWS TODO
-%{_bindir}/*
-%{_datadir}/%{name}
+%package -n %{libname}
+Summary:	Shared libraries for vips
+Group:		System/Libraries
 
-#--------------------------------------------------------------------
-
-%package -n %{lib_name}
-Summary:        Main library for vips
-Group:          System/Libraries
-Provides:       %{name} = %{version}-%{release}
-
-%description -n %{lib_name}
+%description -n %{libname}
 This package contains the library needed to run programs dynamically
 linked with vips.
 
-%if %mdkversion < 200900
-%post -n %{lib_name} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %{lib_name} -p /sbin/ldconfig
-%endif
-
-%files -n %{lib_name}
-%defattr(-,root,root,-)
-%{_libdir}/*.so.*
-
-#--------------------------------------------------------------------
-
-%package -n %{lib_name}-devel
-Summary:        VIPS devel files
-Group:          Development/Other
-Provides:       %{lib_name_orig}-devel = %{version}-%{release}
-Provides:       %{name}-devel = %{version}-%{release}
-Requires:	%{lib_name} = %{version}
+%package -n %{develname}
+Summary:	Development headers and library for vips
+Group:		Development/Other
+Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{version}
+Obsoletes:	%{mklibname vips 10 -d}
 %define _requires_exceptions  devel\(libpathplan\)\\|devel\(libgvgd\)\\|devel\(libcdt\)\\|devel\(libgraph\)\\|devel\(libgvc\)
 
-%description -n %{lib_name}-devel
+%description -n %{develname}
 This package contains the headers that programmers will need to develop
 applications which will use vips.
 
-%files -n %{lib_name}-devel
+%prep
+%setup -q
+
+%build
+# Build against GraphicsMagick: it's a better choice for this kind of
+# usage, and anyway it works with underlinking protection,
+# whereas ImageMagick does not - AdamW 2008/07
+%configure2_5x --with-magickpackage=GraphicsMagick
+%make
+
+%install
+rm -rf %{buildroot}
+%makeinstall
+
+rm -fr %{buildroot}/%{_datadir}/locale/malkovich
+%find_lang %{name}7
+
+%if %mdkversion < 200900
+%post -n %{libname} -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
+%postun -n %{libname} -p /sbin/ldconfig
+%endif
+
+%clean
+rm -rf %{buildroot}
+
+%files -f %{name}7.lang
+%defattr(-,root,root,-)
+%doc README AUTHORS NEWS TODO
+%{_bindir}/*
+%{_datadir}/%{name}
+
+%files -n %{libname}
+%defattr(-,root,root,-)
+%{_libdir}/*.so.%{major}*
+
+%files -n %{develname}
 %defattr(-,root,root,-)
 %{_libdir}/libvips*.so
 %defattr(644,root,root,755)
@@ -84,23 +96,4 @@ applications which will use vips.
 %doc %{_defaultdocdir}/%{name}
 %{_libdir}/pkgconfig/*
 %{_mandir}/man?/*
-
-#--------------------------------------------------------------------
-
-%prep
-%setup -q
-
-%build
-%configure
-%make
-
-%install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall
-rm -fr $RPM_BUILD_ROOT/%{_datadir}/locale/malkovich
-%find_lang %{name}7
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 
