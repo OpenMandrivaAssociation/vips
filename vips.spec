@@ -20,6 +20,7 @@ BuildRequires:	fftw3-devel
 BuildRequires:	zlib-devel 
 BuildRequires:	liboil-devel
 BuildRequires:	graphicsmagick-devel
+BuildRequires:	python-devel
 BuildRequires:	perl(XML::Parser)
 
 %description
@@ -48,6 +49,14 @@ Obsoletes:	%{mklibname vips 10 -d}
 %description -n %{develname}
 This package contains the headers that programmers will need to develop
 applications which will use vips.
+
+%package python
+Summary:	Python support for the VIPS image processing library
+Group:		Development/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description python
+The %{name}-python package contains Python support for VIPS.
 
 %prep
 %setup -q
@@ -97,3 +106,6 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*
 %{_mandir}/man?/*
 
+%files python
+%defattr(-,root,root,-)
+%{python_sitearch}/vipsCC
