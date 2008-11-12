@@ -4,7 +4,7 @@
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.14.4
+Version:	7.16.3
 Release:	%{mkrel 1}
 License:	LGPLv2+
 Group:		Video
