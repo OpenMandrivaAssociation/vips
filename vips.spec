@@ -10,6 +10,7 @@ License:	LGPLv2+
 Group:		Video
 URL:		http://www.vips.ecs.soton.ac.uk/index.php
 Source0:	%{name}-%{version}.tar.gz
+Patch0:		vips-7.16.4-fix-str-fmt.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	glib2-devel 
 BuildRequires:	pango-devel
@@ -60,6 +61,7 @@ The %{name}-python package contains Python support for VIPS.
 
 %prep
 %setup -q
+%patch0 -p0
 
 %build
 # Build against GraphicsMagick: it's a better choice for this kind of
