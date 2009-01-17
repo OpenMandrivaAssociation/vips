@@ -20,9 +20,13 @@ BuildRequires:	jpeg-devel
 BuildRequires:	tiff-devel
 BuildRequires:	fftw3-devel 
 BuildRequires:	zlib-devel 
+BuildRequires:	OpenEXR-devel
+BuildRequires:	lcms-devel
+BuildRequires:	libexif-devel
 BuildRequires:	liboil-devel
 BuildRequires:	graphicsmagick-devel
 BuildRequires:	python-devel
+BuildRequires:	swig
 BuildRequires:	perl(XML::Parser)
 
 %description
@@ -76,7 +80,7 @@ The %{name}-python package contains Python support for VIPS.
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+%makeinstall_std
 
 rm -fr %{buildroot}/%{_datadir}/locale/malkovich
 %find_lang %{name}7
