@@ -4,13 +4,12 @@
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.16.4
-Release:	%{mkrel 2}
+Version:	7.18.2
+Release:	%{mkrel 1}
 License:	LGPLv2+
 Group:		Video
 URL:		http://www.vips.ecs.soton.ac.uk/index.php
 Source0:	%{name}-%{version}.tar.gz
-Patch0:		vips-7.16.4-fix-str-fmt.patch
 Patch1:		vips-7.16.4-fix-linkage.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	glib2-devel 
@@ -67,7 +66,6 @@ The %{name}-python package contains Python support for VIPS.
 
 %prep
 %setup -q
-%patch0 -p0
 %patch1 -p0
 
 %build
