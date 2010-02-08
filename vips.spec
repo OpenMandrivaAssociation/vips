@@ -4,13 +4,12 @@
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.18.2
+Version:	7.20.7
 Release:	%{mkrel 1}
 License:	LGPLv2+
 Group:		Video
 URL:		http://www.vips.ecs.soton.ac.uk/index.php
 Source0:	%{name}-%{version}.tar.gz
-Patch1:		vips-7.16.4-fix-linkage.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	glib2-devel 
 BuildRequires:	pango-devel
@@ -26,6 +25,7 @@ BuildRequires:	liboil-devel
 BuildRequires:	graphicsmagick-devel
 BuildRequires:	python-devel
 BuildRequires:	swig
+BuildRequires:	gtk-doc
 BuildRequires:	perl(XML::Parser)
 
 %description
@@ -66,7 +66,6 @@ The %{name}-python package contains Python support for VIPS.
 
 %prep
 %setup -q
-%patch1 -p0
 
 %build
 # Build against GraphicsMagick: it's a better choice for this kind of
@@ -81,7 +80,7 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 rm -fr %{buildroot}/%{_datadir}/locale/malkovich
-%find_lang %{name}7
+%find_lang %{name}-7.20
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
@@ -93,11 +92,10 @@ rm -fr %{buildroot}/%{_datadir}/locale/malkovich
 %clean
 rm -rf %{buildroot}
 
-%files -f %{name}7.lang
+%files -f %{name}-7.20.lang
 %defattr(-,root,root,-)
 %doc README AUTHORS NEWS TODO
 %{_bindir}/*
-%{_datadir}/%{name}
 
 %files -n %{libname}
 %defattr(-,root,root,-)
