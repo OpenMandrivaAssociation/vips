@@ -4,8 +4,8 @@
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.20.7
-Release:	%{mkrel 2}
+Version:	7.26.7
+Release:	1
 License:	LGPLv2+
 Group:		Video
 URL:		http://www.vips.ecs.soton.ac.uk/index.php
@@ -76,30 +76,23 @@ The %{name}-python package contains Python support for VIPS.
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 rm -fr %{buildroot}/%{_datadir}/locale/malkovich
-%find_lang %{name}-7.20
+%find_lang %{name}-7.26
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
-
-%files -f %{name}-7.20.lang
+%files -f %{name}-7.26.lang
 %defattr(-,root,root,-)
-%doc README AUTHORS NEWS TODO
+#%doc README AUTHORS NEWS TODO
 %{_bindir}/*
+%{_datadir}/locale/de/LC_MESSAGES/vips7.mo
+%{_datadir}/locale/en_GB/LC_MESSAGES/vips7.mo
+
 
 %files -n %{libname}
 %defattr(-,root,root,-)
 %{_libdir}/*.so.%{major}*
+
 
 %files -n %{develname}
 %defattr(-,root,root,-)
