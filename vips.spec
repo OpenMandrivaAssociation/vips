@@ -21,7 +21,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	OpenEXR-devel
 BuildRequires:	lcms-devel
 BuildRequires:	libexif-devel
-BuildRequires:	liboil-devel
+BuildRequires:	oil-devel
 BuildRequires:	graphicsmagick-devel
 BuildRequires:	python-devel
 BuildRequires:	swig
