@@ -1,34 +1,34 @@
-%define major		15
+%define major		31
 %define libname		%mklibname %{name} %{major}
 %define develname	%mklibname %{name} -d
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.28.2
+Version:	7.30.3
 Release:	1
 License:	LGPLv2+
 Group:		Video
 URL:		http://www.vips.ecs.soton.ac.uk/index.php
 Source0:	http://www.vips.ecs.soton.ac.uk/supported/current/%{name}-%{version}.tar.gz
-BuildRequires:	glib2-devel 
-BuildRequires:	pango-devel
-BuildRequires:	png-devel
-BuildRequires:	jpeg-devel 
-BuildRequires:	tiff-devel
-BuildRequires:	fftw3-devel 
-BuildRequires:	zlib-devel 
-BuildRequires:	OpenEXR-devel
-BuildRequires:	lcms-devel
-BuildRequires:	libexif-devel
-BuildRequires:	oil-devel
-BuildRequires:	graphicsmagick-devel
-BuildRequires:	python-devel
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(pango)
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(matio)
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(OpenEXR)
+BuildRequires:	pkgconfig(lcms)
+BuildRequires:	pkgconfig(libexif)
+BuildRequires:	pkgconfig(liboil-0.3)
+BuildRequires:	pkgconfig(GraphicsMagick)
+BuildRequires:	pkgconfig(python)
 BuildRequires:	swig
 BuildRequires:	gtk-doc
 BuildRequires:	perl(XML::Parser)
-BuildRequires:	openslide-devel
-BuildRequires:	matio-devel
-BuildRequires:	cfitsio-devel
+BuildRequires:	pkgconfig(openslide)
+BuildRequires:	pkgconfig(matio)
+BuildRequires:	pkgconfig(cfitsio)
 BuildRequires:	libv4l-devel
 
 %description
@@ -51,8 +51,6 @@ Summary:	Development headers and library for vips
 Group:		Development/Other
 Provides:	%{name}-devel = %{EVRD}
 Requires:	%{libname} = %{version}
-Obsoletes:	%{mklibname vips 10 -d}
-%define _requires_exceptions  devel\(libpathplan\)\\|devel\(libgvgd\)\\|devel\(libcdt\)\\|devel\(libgraph\)\\|devel\(libgvc\)
 
 %description -n %{develname}
 This package contains the headers that programmers will need to develop
@@ -88,18 +86,14 @@ rm -fr %{buildroot}/%{_datadir}/locale/malkovich
 %find_lang %{name}7
 
 %files -f %{name}7.lang
-%defattr(-,root,root,-)
 #doc README AUTHORS NEWS TODO
 %{_bindir}/*
 
-
 %files -n %{libname}
-%defattr(-,root,root,-)
 %{_libdir}/*.so.%{major}*
 
 
 %files -n %{develname}
-%defattr(-,root,root,-)
 %{_libdir}/libvips*.so
 %defattr(644,root,root,755)
 %{_includedir}/*
@@ -108,7 +102,6 @@ rm -fr %{buildroot}/%{_datadir}/locale/malkovich
 %{_mandir}/man?/*
 %{_datadir}/gtk-doc/html/libvips/
 
-
 %files -n python-%{name}
-%defattr(-,root,root,-)
 %{python_sitearch}/vipsCC
+
