@@ -1,35 +1,37 @@
-%define major		31
-%define libname		%mklibname %{name} %{major}
-%define develname	%mklibname %{name} -d
+%define major 37
+%define libname %mklibname %{name} %{major}
+%define libcc %mklibname %{name}CC %{major}
+%define devname %mklibname %{name} -d
+%define gimajor 8.0
+%define girname %mklibname vips-gir %{gimajor}
 
 Summary:	Image processing system
 Name:		vips
-Version:	7.30.3
+Version:	7.38.1
 Release:	1
 License:	LGPLv2+
 Group:		Video
-URL:		http://www.vips.ecs.soton.ac.uk/index.php
+Url:		http://www.vips.ecs.soton.ac.uk/index.php
 Source0:	http://www.vips.ecs.soton.ac.uk/supported/current/%{name}-%{version}.tar.gz
-BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(pango)
-BuildRequires:	pkgconfig(libpng)
+BuildRequires:	gtk-doc
+BuildRequires:	swig
 BuildRequires:	jpeg-devel
-BuildRequires:	pkgconfig(libtiff-4)
-BuildRequires:	pkgconfig(matio)
-BuildRequires:	pkgconfig(zlib)
-BuildRequires:	pkgconfig(OpenEXR)
+BuildRequires:	perl(XML::Parser)
+BuildRequires:	pkgconfig(cfitsio)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(GraphicsMagick)
 BuildRequires:	pkgconfig(lcms)
 BuildRequires:	pkgconfig(libexif)
 BuildRequires:	pkgconfig(liboil-0.3)
-BuildRequires:	pkgconfig(GraphicsMagick)
-BuildRequires:	pkgconfig(python)
-BuildRequires:	swig
-BuildRequires:	gtk-doc
-BuildRequires:	perl(XML::Parser)
-BuildRequires:	pkgconfig(openslide)
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libv4l1)
 BuildRequires:	pkgconfig(matio)
-BuildRequires:	pkgconfig(cfitsio)
-BuildRequires:	libv4l-devel
+BuildRequires:	pkgconfig(OpenEXR)
+BuildRequires:	pkgconfig(openslide)
+BuildRequires:	pkgconfig(pango)
+BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(zlib)
 
 %description
 VIPS is a free image processing system. It aims to be about half-way between
@@ -37,6 +39,11 @@ Photoshop and Excel: it is very bad at retouching photographs, but very handy
 for the many other imaging tasks that programs like Photoshop get used for. 
 It is good with large images (images larger than the amount of RAM in your 
 machine), and for working with color.
+
+%files -f %{name}7.38.lang
+%{_bindir}/*
+
+#----------------------------------------------------------------------------
 
 %package -n %{libname}
 Summary:	Shared libraries for vips
@@ -46,25 +53,74 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with vips.
 
-%package -n %{develname}
+%files -n %{libname}
+%{_libdir}/lib%{name}.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%package -n %{libcc}
+Summary:	Shared libraries for vips
+Group:		System/Libraries
+
+%description -n %{libcc}
+This package contains the library needed to run programs dynamically
+linked with vips.
+
+%files -n %{libcc}
+%{_libdir}/lib%{name}CC.so.%{major}*
+
+#----------------------------------------------------------------------------
+
+%package -n %{girname}
+Summary:	GObject Introspection interface description for %{name}
+Group:		System/Libraries
+Requires:	%{libname} = %{EVRD}
+Requires:	%{libcc} = %{EVRD}
+
+%description -n %{girname}
+GObject Introspection interface description for %{name}.
+
+%files -n %{girname}
+%{_libdir}/girepository-1.0/Vips-%{gimajor}.typelib
+
+#----------------------------------------------------------------------------
+
+%package -n %{devname}
 Summary:	Development headers and library for vips
 Group:		Development/Other
+Requires:	%{libname} = %{EVRD}
+Requires:	%{libcc} = %{EVRD}
+Requires:	%{girname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
-Requires:	%{libname} = %{version}
 
-%description -n %{develname}
+%description -n %{devname}
 This package contains the headers that programmers will need to develop
 applications which will use vips.
+
+%files -n %{devname}
+%{_libdir}/libvips*.so
+%{_includedir}/*
+%doc %{_defaultdocdir}/%{name}
+%{_libdir}/pkgconfig/*
+%{_mandir}/man?/*
+%{_datadir}/gtk-doc/html/libvips/
+%{_datadir}/gir-1.0/Vips-%{gimajor}.gir
+
+#----------------------------------------------------------------------------
 
 %package -n python-%{name}
 Summary:	Python support for the VIPS image processing library
 Group:		Development/Python
 Requires:	%{name} = %{version}-%{release}
-%py_requires -d
 %rename %{name}-python
 
 %description -n python-%{name}
 The %{name}-python package contains Python support for VIPS.
+
+%files -n python-%{name}
+%{python_sitearch}/vipsCC
+
+#----------------------------------------------------------------------------
 
 %prep
 %setup -q
@@ -83,25 +139,6 @@ The %{name}-python package contains Python support for VIPS.
 %makeinstall_std
 
 rm -fr %{buildroot}/%{_datadir}/locale/malkovich
-%find_lang %{name}7
 
-%files -f %{name}7.lang
-#doc README AUTHORS NEWS TODO
-%{_bindir}/*
-
-%files -n %{libname}
-%{_libdir}/*.so.%{major}*
-
-
-%files -n %{develname}
-%{_libdir}/libvips*.so
-%defattr(644,root,root,755)
-%{_includedir}/*
-%doc %{_defaultdocdir}/%{name}
-%{_libdir}/pkgconfig/*
-%{_mandir}/man?/*
-%{_datadir}/gtk-doc/html/libvips/
-
-%files -n python-%{name}
-%{python_sitearch}/vipsCC
+%find_lang %{name}7.38
 
