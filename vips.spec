@@ -8,7 +8,7 @@
 Summary:	Image processing system
 Name:		vips
 Version:	7.38.1
-Release:	1
+Release:	2
 License:	LGPLv2+
 Group:		Video
 Url:		http://www.vips.ecs.soton.ac.uk/index.php
