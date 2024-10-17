@@ -11,7 +11,7 @@ Version:	7.38.1
 Release:	2
 License:	LGPLv2+
 Group:		Video
-Url:		http://www.vips.ecs.soton.ac.uk/index.php
+Url:		https://www.vips.ecs.soton.ac.uk/index.php
 Source0:	http://www.vips.ecs.soton.ac.uk/supported/current/%{name}-%{version}.tar.gz
 BuildRequires:	gtk-doc
 BuildRequires:	swig
