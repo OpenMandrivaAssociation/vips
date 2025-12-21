@@ -13,6 +13,11 @@ License:	LGPLv2+
 Group:		Video
 Url:		https://www.vips.ecs.soton.ac.uk/index.php
 Source0:	http://www.vips.ecs.soton.ac.uk/supported/current/%{name}-%{version}.tar.gz
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gtk-doc
 BuildRequires:	swig
 BuildRequires:	jpeg-devel
